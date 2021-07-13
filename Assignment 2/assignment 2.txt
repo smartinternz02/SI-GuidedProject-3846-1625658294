@@ -1,0 +1,39 @@
+// C++ code
+#include<Servo.h>
+Servo s;
+
+void setup()
+{
+  pinMode(2, OUTPUT);
+  pinMode(3, INPUT);
+  s.attach(4);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  digitalWrite(2, LOW);
+  digitalWrite(2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(2, LOW);
+  float dur= pulseIn(3,HIGH);
+  float dis= (dur *0.0343)/2;
+  //Serial.print("Distance in Cm:  ");
+  // Serial.println(dis);
+  if(dis<65)
+  {
+   Serial.println("Garage door open");
+    for(int i=0;i<=180;i++)
+    {
+      s.write(i);
+      delay(100);
+    }
+    delay(30000);
+    Serial.println("Garage door close");
+    for(int j=180;j>=0;j--)
+    {
+      s.write(j);
+      delay(100);
+    }
+  }
+}
